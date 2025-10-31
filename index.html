@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中学受験タイピングマスター</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- ローディング画面 -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">🎯</div>
+            <h2>中学受験タイピングマスター</h2>
+            <div class="loading-bar">
+                <div class="loading-progress" id="loading-progress"></div>
+            </div>
+            <p class="loading-text">読み込み中...</p>
+        </div>
+    </div>
+
+    <!-- カウントダウン画面 -->
+    <div id="countdown-screen" class="countdown-screen">
+        <div class="countdown-number" id="countdown-number">3</div>
+    </div>
+
+    <!-- ヘルプモーダル -->
+    <div id="help-modal" class="help-modal">
+        <div class="help-content">
+            <button class="help-close" id="help-close" aria-label="閉じる">×</button>
+            <h2>🎯 遊び方</h2>
+            
+            <div class="help-section">
+                <h3>📖 ゲームの目的</h3>
+                <p>中学受験でよく出る言葉をタイピングして、タイピング力をアップしよう！</p>
+            </div>
+            
+            <div class="help-section">
+                <h3>⌨️ 操作方法</h3>
+                <ul>
+                    <li>画面に表示される言葉を<strong>ローマ字</strong>でタイピング</li>
+                    <li>正解すると次の問題へ</li>
+                    <li>制限時間内にたくさん答えよう</li>
+                </ul>
+            </div>
+            
+            <div class="help-section">
+                <h3>🎮 ゲームモード</h3>
+                <ul>
+                    <li><strong>タイムアタック：</strong>60秒でどれだけ解けるか</li>
+                    <li><strong>30秒チャレンジ：</strong>短期集中モード</li>
+                    <li><strong>完璧クリア：</strong>ミス3回まで、全問正解を目指す</li>
+                    <li><strong>サバイバル：</strong>ミス1回でゲームオーバー</li>
+                </ul>
+            </div>
+            
+            <div class="help-section">
+                <h3>💯 スコア計算</h3>
+                <ul>
+                    <li>基本点：10点</li>
+                    <li>コンボボーナス：連続正解で加点</li>
+                    <li>速度ボーナス：速く入力するほど高得点</li>
+                    <li>コンボ倍率：5コンボ以上で得点が倍に！</li>
+                </ul>
+            </div>
+            
+            <div class="help-section">
+                <h3>🏆 称号システム</h3>
+                <p>スコアに応じて称号がもらえるよ！</p>
+                <p>見習い → 一般人 → 秀才 → 天才 → 神童 → 伝説 → 界王 → 界王神 → タイピング神</p>
+            </div>
+            
+            <div class="help-section">
+                <label>
+                    <input type="checkbox" id="dont-show-again">
+                    次回から表示しない
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>🎯 中学受験タイピングマスター 🎯</h1>
+            <p class="subtitle">楽しくタイピングをマスターし、中学受験単語もマスターしよう！</p>
+        </header>
+
+        <main>
+            <!-- トップ画面 -->
+            <section id="start-screen" class="screen active" role="main" aria-label="トップ画面">
+                <div class="welcome-box">
+                    <h2>ようこそ！</h2>
+                    <p>中学受験でよく出る言葉をタイピングして練習しよう</p>
+                    <div class="button-group">
+                        <button class="btn btn-primary btn-large" id="start-btn" aria-label="ゲームを開始">スタート</button>
+                        <button class="btn btn-secondary btn-large" id="scores-btn" aria-label="成績画面を開く">成績を見る</button>
+                        <button class="btn btn-secondary btn-large" id="achievements-btn" aria-label="実績画面を開く">実績</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- カテゴリ選択画面 -->
+            <section id="category-screen" class="screen">
+                <div class="category-header">
+                    <h2>カテゴリを選んでね</h2>
+                    <p>どの分野を練習する？</p>
+                </div>
+                <div class="category-grid" id="category-grid">
+                    <!-- カテゴリカードがJavaScriptで動的に生成されます -->
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-secondary" id="back-to-top-btn">トップに戻る</button>
+                </div>
+            </section>
+
+            <!-- モード選択画面 -->
+            <section id="mode-screen" class="screen">
+                <div class="category-header">
+                    <h2>ゲームモードを選んでね</h2>
+                    <p>どのモードで遊ぶ？</p>
+                </div>
+                <div class="mode-grid">
+                    <div class="mode-card" data-mode="timeattack" tabindex="0" role="button">
+                        <span class="mode-icon">⏱️</span>
+                        <div class="mode-name">タイムアタック</div>
+                        <div class="mode-description">60秒で何問解けるか！</div>
+                    </div>
+                    <div class="mode-card" data-mode="quick" tabindex="0" role="button">
+                        <span class="mode-icon">⚡</span>
+                        <div class="mode-name">30秒チャレンジ</div>
+                        <div class="mode-description">短期集中モード</div>
+                    </div>
+                    <div class="mode-card" data-mode="perfect" tabindex="0" role="button">
+                        <span class="mode-icon">💯</span>
+                        <div class="mode-name">完璧クリア</div>
+                        <div class="mode-description">ミス3回まで！全問正解を目指せ</div>
+                    </div>
+                    <div class="mode-card" data-mode="survival" tabindex="0" role="button">
+                        <span class="mode-icon">🔥</span>
+                        <div class="mode-name">サバイバル</div>
+                        <div class="mode-description">ミス1回でゲームオーバー！</div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-secondary" id="back-to-category-btn">カテゴリ選択に戻る</button>
+                </div>
+            </section>
+
+            <!-- ゲーム画面 -->
+            <section id="game-screen" class="screen">
+                <!-- ヘッダー情報 -->
+                <div class="game-header">
+                    <div class="game-info">
+                        <div class="info-item">
+                            <span class="label">スコア</span>
+                            <span class="value" id="score">0</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">残り時間</span>
+                            <span class="value" id="timer">60</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">コンボ</span>
+                            <span class="value combo" id="combo">0</span>
+                        </div>
+                        <div class="info-item" id="mistakes-item" style="display: none;">
+                            <span class="label">残りミス</span>
+                            <span class="value" id="mistakes">3</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 進捗バー -->
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                        <span class="progress-text" id="progress-text">0 / 0</span>
+                    </div>
+                </div>
+
+                <!-- メインエリア -->
+                <div class="question-box">
+                    <div class="word-display">
+                        <p class="japanese" id="japanese-word">問題の言葉</p>
+                        <p class="reading" id="reading-word">よみがな</p>
+                        <p class="romaji" id="romaji-display">入力: romaji</p>
+                        <p class="hint" id="hint-text"></p>
+                    </div>
+                </div>
+
+                <!-- 入力エリア -->
+                <div class="input-area">
+                    <input type="text" id="typing-input" placeholder="ローマ字でタイピングしてね" autocomplete="off">
+                </div>
+
+                <!-- フィードバック -->
+                <div class="feedback" id="feedback"></div>
+
+                <!-- フッター -->
+                <div class="game-footer">
+                    <button class="btn btn-secondary btn-small" id="stop-btn">中断</button>
+                </div>
+            </section>
+
+            <!-- 結果画面 -->
+            <section id="result-screen" class="screen">
+                <div class="result-box">
+                    <h2>🎉 おつかれさま！ 🎉</h2>
+                    
+                    <!-- 称号表示 -->
+                    <div class="rank-display">
+                        <div class="rank-title" id="rank-title">タイピング神</div>
+                        <div class="rank-badges" id="rank-badges"></div>
+                    </div>
+                    
+                    <!-- 総合スコア -->
+                    <div class="total-score">
+                        <span class="score-label">スコア</span>
+                        <span class="score-value" id="final-score">0</span>
+                    </div>
+                    
+                    <!-- 詳細統計 -->
+                    <div class="result-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">正解数</span>
+                            <span class="stat-value" id="final-correct">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">正答率</span>
+                            <span class="stat-value" id="accuracy">0</span>%
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">最大コンボ</span>
+                            <span class="stat-value" id="max-combo">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">かかった時間</span>
+                            <span class="stat-value" id="time-taken">0</span>秒
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn btn-primary" id="retry-btn">もう一度</button>
+                        <button class="btn btn-secondary" id="home-btn">カテゴリ選択へ</button>
+                        <button class="btn btn-secondary" id="view-scores-btn">成績を見る</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 実績一覧画面 -->
+            <section id="achievements-screen" class="screen">
+                <div class="scores-box">
+                    <h2>🏆 実績一覧 🏆</h2>
+                    
+                    <div class="achievement-progress">
+                        <p>解除率: <span id="achievement-percentage">0</span>%</p>
+                        <div class="progress-container">
+                            <div class="progress-bar" id="achievement-progress-bar"></div>
+                        </div>
+                    </div>
+                    
+                    <div id="achievements-list" class="achievements-grid">
+                        <!-- 実績がここに表示されます -->
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn btn-secondary" id="back-from-achievements-btn">トップに戻る</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- スコア記録画面 -->
+            <section id="scores-screen" class="screen">
+                <div class="scores-box">
+                    <h2>📊 これまでの記録 📊</h2>
+                    
+                    <!-- 総合統計 -->
+                    <div class="overall-stats">
+                        <div class="stat-card rank-card" id="best-rank-card">
+                            <div class="stat-card-rank" id="best-rank">-</div>
+                            <div class="stat-card-label">🎖️最高スコア🎖️</div>
+                            <div class="stat-card-value" id="best-score">0</div>
+                        </div>
+                        <div class="stat-card rank-card" id="last-rank-card">
+                            <div class="stat-card-rank" id="last-rank">-</div>
+                            <div class="stat-card-label">🎖️最後のスコア🎖️</div>
+                            <div class="stat-card-value" id="last-score">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-card-label">総プレイ回数</div>
+                            <div class="stat-card-value" id="total-games">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-card-label">平均スコア</div>
+                            <div class="stat-card-value" id="avg-score">0</div>
+                        </div>
+                    </div>
+                    
+                    <!-- グラフ -->
+                    <h3>スコア推移</h3>
+                    <div class="chart-container">
+                        <canvas id="score-chart" width="600" height="300"></canvas>
+                    </div>
+                    
+                    <h3>カテゴリ別プレイ回数</h3>
+                    <div class="chart-container">
+                        <div id="category-chart" class="bar-chart"></div>
+                    </div>
+                    
+                    <!-- プレイ履歴 -->
+                    <h3>プレイ履歴</h3>
+                    <div id="scores-list" class="scores-list">
+                        <!-- スコアがここに表示されます -->
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn btn-secondary" id="back-btn">トップに戻る</button>
+                        <button class="btn btn-secondary" id="clear-history-btn">履歴をクリア</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>© 2024 中学受験タイピング練習アプリ</p>
+            <p>データはこのブラウザにのみ保存されます</p>
+            <p>ブラウザのデータを削除するとリセットされます</p>
+            <p>📧 お問い合わせ:tomota53@yahoo.co.jp</p>
+            <p>バグ報告、機能リクエスト、ご質問などお気軽にどうぞ</p>
+        </footer>
+    </div>
+
+    <script src="js/data1.js"></script>
+    <script src="js/data2.js"></script>
+    <script src="js/data3.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/sound.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/achievements.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
