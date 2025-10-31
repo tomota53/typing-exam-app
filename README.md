@@ -195,4 +195,40 @@ typing-exam-app/
 
 ---
 
+## 🌐 SEO・アクセシビリティ対応
+
+本アプリは検索エンジン最適化（SEO）を実施しています：
+
+### 実装済みSEO対策
+- ✅ セマンティックHTML（適切な見出しタグ、ARIA属性）
+- ✅ メタタグ最適化（title, description, keywords）
+- ✅ Open Graph対応（SNSシェア最適化）
+- ✅ Twitter Card対応
+- ✅ 構造化データ（JSON-LD）
+- ✅ robots.txt設定
+- ✅ sitemap.xml作成
+- ✅ Canonical URL設定
+- ✅ レスポンシブデザイン（モバイルフレンドリー）
+
+### ターゲットキーワード
+- タイピング練習
+- タイピングゲーム
+- 無料タイピング
+- ブラインドタッチ
+- 中学受験
+- ローマ字入力練習
+- オンラインタイピング
+
+### Google Search Console登録手順
+1. [Google Search Console](https://search.google.com/search-console/)にアクセス
+2. プロパティを追加: `https://typing-exam-app.vercel.app/`
+3. サイトマップを送信: `https://typing-exam-app.vercel.app/sitemap.xml`
+
+### アクセス解析（推奨）
+Google Analyticsの導入を推奨します。
+
+---
+
 **楽しくタイピングを学んで、中学受験に役立てよう！🎯**
+
+**🔗 アプリURL**: https://typing-exam-app.vercel.app/

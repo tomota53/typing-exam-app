@@ -1,0 +1,27 @@
+# robots.txt for typing-exam-app.vercel.app
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://typing-exam-app.vercel.app/sitemap.xml
+
+# Google
+User-agent: Googlebot
+Allow: /
+
+# Bing
+User-agent: Bingbot
+Allow: /
+
+# Yahoo
+User-agent: Slurp
+Allow: /
+
+# Baidu
+User-agent: Baiduspider
+Allow: /
+
+# Yandex
+User-agent: Yandex
+Allow: /
