@@ -218,6 +218,7 @@ class TypingGame {
     // 入力をチェック
     checkInput(input) {
         if (!this.isPlaying || !this.currentWord) {
+            console.log('[DEBUG] checkInput: ゲーム終了またはcurrentWordなし');
             return null;
         }
 
@@ -243,13 +244,19 @@ class TypingGame {
             const points = this.calculateScore(correctRomaji.length, this.combo, speed);
             this.score += points;
             
-            return {
+            // この単語の判定結果を保存
+            const result = {
                 isCorrect: true,
                 points: points,
                 word: this.currentWord,
                 combo: this.combo,
                 speed: speed.toFixed(2)
             };
+            
+            // currentWordをnullにして、同じ問題で再度カウントされないようにする
+            this.currentWord = null;
+            
+            return result;
         } else if (normalizedInput.length >= correctRomaji.length) {
             // 不正解（文字数が同じか超えた場合）
             this.wrongCount++;
@@ -262,6 +269,16 @@ class TypingGame {
                 shouldEnd: this.maxMistakes !== Infinity && this.wrongCount >= this.maxMistakes
             });
             
+            // この単語の判定結果を保存
+            const result = {
+                isCorrect: false,
+                correctAnswer: correctRomaji,
+                word: this.currentWord
+            };
+            
+            // currentWordをnullにして、同じ問題で再度カウントされないようにする
+            this.currentWord = null;
+            
             // ミス制限モードでゲームオーバーチェック
             if (this.maxMistakes !== Infinity && this.wrongCount >= this.maxMistakes) {
                 console.log('[DEBUG] ゲーム終了条件を満たしました。end()を呼びます');
@@ -269,11 +286,7 @@ class TypingGame {
                 console.log('[DEBUG] end()完了。isPlaying:', this.isPlaying);
             }
             
-            return {
-                isCorrect: false,
-                correctAnswer: correctRomaji,
-                word: this.currentWord
-            };
+            return result;
         }
 
         return null; // まだ判定しない

@@ -4,6 +4,7 @@ class App {
         this.currentScreen = 'start';
         this.selectedCategory = null;
         this.selectedMode = 'timeattack';
+        this.isProcessingInput = false; // 入力処理中フラグ
         this.init();
     }
 
@@ -118,9 +119,11 @@ class App {
         // ゲーム画面
         const typingInput = document.getElementById('typing-input');
         if (typingInput) {
-            typingInput.addEventListener('input', (e) => {
+            // inputハンドラーを保存
+            this.typingInputHandler = (e) => {
                 this.handleTypingInput(e.target.value);
-            });
+            };
+            typingInput.addEventListener('input', this.typingInputHandler);
 
             typingInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
@@ -202,6 +205,9 @@ class App {
         // 入力フィールドをクリア、有効化してフォーカス
         const typingInput = document.getElementById('typing-input');
         if (typingInput) {
+            // イベントリスナーを再追加
+            typingInput.removeEventListener('input', this.typingInputHandler);
+            typingInput.addEventListener('input', this.typingInputHandler);
             typingInput.value = '';
             typingInput.disabled = false; // 有効化
             typingInput.focus();
@@ -255,13 +261,22 @@ class App {
 
     // タイピング入力を処理
     handleTypingInput(input) {
-        if (!game.isGamePlaying()) {
+        if (!game.isGamePlaying() || this.isProcessingInput) {
             return;
         }
 
         const result = game.checkInput(input);
 
         if (result !== null) {
+            // 処理中フラグを立てる
+            this.isProcessingInput = true;
+            
+            // 入力フィールドをすぐにクリア（重複判定を防ぐ）
+            const typingInput = document.getElementById('typing-input');
+            if (typingInput) {
+                typingInput.value = '';
+            }
+            
             if (result.isCorrect) {
                 // 効果音を再生
                 soundManager.play('correct');
@@ -290,17 +305,24 @@ class App {
                 if (game.isGamePlaying()) {
                     this.nextQuestion();
                 } else {
-                    // ゲームが終了した場合、入力フィールドを無効化
-                    const typingInput = document.getElementById('typing-input');
+                    // ゲームが終了した場合、イベントリスナーを削除して入力を完全に無効化
                     if (typingInput) {
+                        typingInput.removeEventListener('input', this.typingInputHandler);
                         typingInput.value = '';
                         typingInput.disabled = true;
                         typingInput.blur();
                     }
+                    // 処理中フラグを解除
+                    this.isProcessingInput = false;
                     // 結果画面へ遷移（コールバックで自動的に呼ばれる）
                     return;
                 }
             }
+            
+            // 処理完了後、少し遅延してフラグを解除（アニメーション時間を確保）
+            setTimeout(() => {
+                this.isProcessingInput = false;
+            }, 100);
         }
     }
 
