@@ -199,10 +199,11 @@ class App {
         // 表示を更新
         this.updateGameDisplay();
         
-        // 入力フィールドをクリアしてフォーカス
+        // 入力フィールドをクリア、有効化してフォーカス
         const typingInput = document.getElementById('typing-input');
         if (typingInput) {
             typingInput.value = '';
+            typingInput.disabled = false; // 有効化
             typingInput.focus();
         }
         
@@ -280,7 +281,25 @@ class App {
                 // 不正解エフェクト
                 this.showWrongEffect();
                 this.showFeedback(`不正解！ 正解: ${result.correctAnswer}`, 'wrong');
-                this.nextQuestion();
+                
+                // ミス表示を更新
+                this.updateMistakesDisplay();
+                
+                // ゲームオーバーチェック（ミス制限モードの場合）
+                // ゲームが終了していない場合のみ次の問題へ
+                if (game.isGamePlaying()) {
+                    this.nextQuestion();
+                } else {
+                    // ゲームが終了した場合、入力フィールドを無効化
+                    const typingInput = document.getElementById('typing-input');
+                    if (typingInput) {
+                        typingInput.value = '';
+                        typingInput.disabled = true;
+                        typingInput.blur();
+                    }
+                    // 結果画面へ遷移（コールバックで自動的に呼ばれる）
+                    return;
+                }
             }
         }
     }

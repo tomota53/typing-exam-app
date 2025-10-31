@@ -1887,3 +1887,167 @@ footer {
         min-width: auto;
     }
 }
+
+/* Amazonアソシエイト 教材セクション */
+.recommended-books {
+    margin-top: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    border-radius: 20px;
+    text-align: center;
+}
+
+.recommended-books h3 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.books-description {
+    font-size: 1.1em;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.book-item {
+    background: white;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.book-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.book-item a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.book-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.book-title {
+    font-size: 0.95em;
+    color: #333;
+    font-weight: bold;
+    line-height: 1.4;
+    min-height: 40px;
+}
+
+/* フッター内の教材セクション */
+.footer-books {
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+    border-radius: 20px 20px 0 0;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.footer-books h3 {
+    font-size: 1.6em;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.footer-books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.footer-book-item {
+    background: white;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.footer-book-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.footer-book-item a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.footer-book-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.footer-book-title {
+    font-size: 0.95em;
+    color: #333;
+    font-weight: bold;
+    line-height: 1.4;
+    min-height: 40px;
+}
+
+/* モバイル対応（教材セクション） */
+@media (max-width: 767px) {
+    .recommended-books {
+        padding: 20px 15px;
+        margin-top: 30px;
+    }
+    
+    .recommended-books h3 {
+        font-size: 1.4em;
+    }
+    
+    .books-description {
+        font-size: 1em;
+    }
+    
+    .books-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .footer-books {
+        padding: 30px 15px;
+    }
+    
+    .footer-books h3 {
+        font-size: 1.4em;
+    }
+    
+    .footer-books-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .book-item,
+    .footer-book-item {
+        padding: 12px;
+    }
+    
+    .book-title,
+    .footer-book-title {
+        font-size: 0.85em;
+        min-height: 35px;
+    }
+}

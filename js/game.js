@@ -94,6 +94,7 @@ class TypingGame {
         this.usedWords = [];
         this.combo = 0;
         this.maxCombo = 0;
+        this.maxMistakes = Infinity; // ミス制限（デフォルトは無制限）
         this.category = null;
         this.categoryWords = [];
         this.questionStartTime = null;
@@ -157,6 +158,7 @@ class TypingGame {
         this.correctCount = 0;
         this.wrongCount = 0;
         this.timeLeft = 60;
+        this.maxMistakes = Infinity; // ミス制限をリセット
         this.usedWords = [];
         this.currentWord = null;
         this.combo = 0;
@@ -398,11 +400,19 @@ class TypingGame {
             ? Math.round((this.correctCount / totalAttempts) * 100) 
             : 0;
 
-        // 平均速度を計算
-        const totalTime = 60 - this.timeLeft;
-        const averageSpeed = totalAttempts > 0 
+        // 平均速度を計算（時間無制限モードの場合の処理も追加）
+        let totalTime;
+        if (this.timeLeft === Infinity) {
+            // 時間無制限モードの場合、経過時間を計算できないので0とする
+            totalTime = 0;
+        } else {
+            totalTime = 60 - this.timeLeft;
+        }
+        
+        // 平均速度（totalTimeが0または正解数が0の場合は0）
+        const averageSpeed = (totalAttempts > 0 && totalTime > 0 && this.correctCount > 0)
             ? (this.correctCount / totalTime).toFixed(2)
-            : 0;
+            : '0';
 
         const results = {
             score: this.score,
