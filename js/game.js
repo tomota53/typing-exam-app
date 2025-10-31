@@ -255,9 +255,18 @@ class TypingGame {
             this.wrongCount++;
             this.combo = 0; // コンボリセット
             
+            console.log('[DEBUG] 不正解:', {
+                wrongCount: this.wrongCount,
+                maxMistakes: this.maxMistakes,
+                isInfinity: this.maxMistakes === Infinity,
+                shouldEnd: this.maxMistakes !== Infinity && this.wrongCount >= this.maxMistakes
+            });
+            
             // ミス制限モードでゲームオーバーチェック
             if (this.maxMistakes !== Infinity && this.wrongCount >= this.maxMistakes) {
+                console.log('[DEBUG] ゲーム終了条件を満たしました。end()を呼びます');
                 this.end();
+                console.log('[DEBUG] end()完了。isPlaying:', this.isPlaying);
             }
             
             return {
